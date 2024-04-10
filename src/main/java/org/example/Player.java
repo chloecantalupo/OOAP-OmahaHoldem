@@ -1,10 +1,12 @@
+package org.example;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private List<Deck.Card> hand;  // Player's hand
+    private final List<Card> hand;  // Player's hand
     private int chips;             // Player's chip count
-    private String name;           // Player's name
+    private final String name;           // Player's name
 
     public Player(String name, int startingChips) {
         this.name = name;
@@ -12,7 +14,7 @@ public class Player {
         this.hand = new ArrayList<>();
     }
 
-    public void receiveCard(Deck.Card card) {
+    public void receiveCard(Card card) {
         if (hand.size() < 4) {  // Ensure only 4 cards are dealt as per Omaha Hold'em rules
             hand.add(card);
         } else {
@@ -49,7 +51,7 @@ public class Player {
     }
 
     // Getter and setter methods
-    public List<Deck.Card> getHand() {
+    public List<Card> getHand() {
         return hand;
     }
 

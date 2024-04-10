@@ -1,9 +1,14 @@
+package org.example;
+
+import java.util.List;
+
 public class OmahaHoldemGame {
     private Deck deck;
     private List<Player> players;
     private List<Card> communityCards;
     private int pot;
     private int currentBet;
+    private int smallBlind; // Big blind is just small blind * 2
 
     public OmahaHoldemGame() {
         // Initialize the game components
