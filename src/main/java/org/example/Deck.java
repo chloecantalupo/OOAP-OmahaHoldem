@@ -24,6 +24,11 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
+    public void reset() {
+        this.cards.clear();
+        initializeDeck();
+    }
+
     public Card dealCard() {
         if (cards.isEmpty()) {
             throw new IllegalStateException("Cannot deal from an empty deck.");

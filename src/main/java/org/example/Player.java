@@ -6,12 +6,16 @@ import java.util.List;
 public class Player {
     private final List<Card> hand;  // Player's hand
     private int chips;             // Player's chip count
+    private int currentBet;     // Amount of chips player has currently bet, used to handle calls after already betting some chips for the round
     private final String name;           // Player's name
+    private boolean dealtIn; // Whether the player is active in the current hand or not
 
     public Player(String name, int startingChips) {
         this.name = name;
         this.chips = startingChips;
+        this.currentBet = 0;
         this.hand = new ArrayList<>();
+        this.dealtIn = false;
     }
 
     public void receiveCard(Card card) {
@@ -29,24 +33,26 @@ public class Player {
         chips -= amount;  // Subtract the bet amount from the player's chips
     }
 
-    // Call to match the current bet
-    public void call(int currentBet) {
-        placeBet(currentBet);
+    public int call(int calledValue) {
+        // Bet the amount of chips necessary to reach the calledValue
+        // returns the amount of extra chips paid in order to call
+        int extraBet = calledValue - this.currentBet;
+        this.placeBet(extraBet);
+        this.currentBet = calledValue;
+        return extraBet;
     }
 
-    // Raise the current bet
-    public void raise(int raiseAmount, int currentBet) {
-        int totalAmount = raiseAmount + currentBet;
-        placeBet(totalAmount);
+    public int raise(int calledValue, int amountRaised) {
+        // Bet the amount of chips necessary to reach the calledValue, PLUS the amount raised on top of that
+        // returns the amount of extra chips paid in order to call + raise
+        int extraBet = call(calledValue) + amountRaised;
+        // call(calledValue) above already called placeBet() for the call, only need to remove the extra amount for raise
+        this.placeBet(amountRaised);
+        this.currentBet = calledValue + amountRaised;
+        return extraBet;
     }
 
-    // Player chooses to fold
-    public void fold() {
-        hand.clear();  // Clear the player's hand
-    }
-
-    // Reset the player's hand for a new round
-    public void newRound() {
+    public void clearHand() {
         hand.clear();
     }
 
@@ -67,6 +73,10 @@ public class Player {
         return name;
     }
 
+    public boolean getDealtIn() {
+        return dealtIn;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -75,4 +85,29 @@ public class Player {
                 ", hand=" + hand +
                 '}';
     }
+
+    public void dealIn() {
+        this.dealtIn = true;
+        this.currentBet = 0;
+    }
+
+    public int getAction() {
+        if (!this.dealtIn) {
+            return -1; // You don't get to bet if you've already folded
+        }
+
+        // For human players, prompt for their action
+        int option = UI.promptAction(this);
+        if (option == -1) {
+            this.clearHand(); // Fold
+            this.dealtIn = false;
+        }
+        return option;
+    }
+
+    public void winPot(int pot) {
+        this.chips += pot;
+    }
+
+
 }
