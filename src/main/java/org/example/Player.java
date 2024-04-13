@@ -28,7 +28,7 @@ public class Player {
 
     public void placeBet(int amount) {
         if (amount > chips) {
-            throw new IllegalArgumentException("Cannot bet more chips than the player has.");
+            System.out.println("Warning: Cannot bet more chips than the player has.");
         }
         chips -= amount;  // Subtract the bet amount from the player's chips
     }
@@ -69,8 +69,16 @@ public class Player {
         this.chips = chips;
     }
 
+    public void setDealtIn(boolean dealt) {
+        this.dealtIn = dealt;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public int getCurrentBet() {
+        return currentBet;
     }
 
     public boolean getDealtIn() {

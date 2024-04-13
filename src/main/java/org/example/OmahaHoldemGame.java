@@ -22,7 +22,7 @@ public class OmahaHoldemGame {
 
         // Create players and their give them their starting chips
         for (int i = 0; i < playerCount; i++) {
-            this.players.add(PlayerFactory.getHumanPlayer("Player " + i, startingChips));
+            this.players.add(PlayerFactory.getBotPlayer("Player " + i, startingChips));
         }
     }
 
