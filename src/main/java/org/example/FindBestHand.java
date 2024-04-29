@@ -3,6 +3,7 @@ package org.example;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.example.FindBestHandHelper.*;
 import static org.example.GenerateHandCombinations.generateCombinations;
 
 /**
@@ -39,46 +40,7 @@ public class FindBestHand {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Finds the winning pair between two hands.
-     * @param hand1 First hand.
-     * @param hand2 Second hand.
-     */
 
-    public static List<Card> findHigherStraight(List<Card> hand1, List<Card> hand2) {
-        int highCard1 = getHighestRank(hand1);
-        int highCard2 = getHighestRank(hand2);
-
-        if (highCard1 > highCard2) {
-            return hand1;
-        } else {
-            return hand2;
-        }
-    }
-
-    /**
-     * Returns the highest card rank in a given hand.
-     * @param hand List of cards.
-     * @return The rank of the highest card.
-     */
-    private static int getHighestRank(List<Card> hand) {
-        return hand.stream()
-                .map(card -> CARD_RANKS.get(card.getRank()))
-                .max(Comparator.naturalOrder())
-                .orElse(0);
-    }
-
-
-    public static void findWinnerOnePair(List<Card> hand1, List<Card> hand2) {
-        int max1 = getMaxRank(hand1);
-        int max2 = getMaxRank(hand2);
-
-        if (max1 > max2) {
-            System.out.println("Winning hand: " + hand1);
-        } else {
-            System.out.println("Winning hand: " + hand2);
-        }
-    }
 
     /**
      * Gets the maximum rank value from a list of cards.
@@ -148,6 +110,12 @@ public class FindBestHand {
                 // Tie-breaking logic, if needed
                 if (currentHandValue == 5) {  // For straights, find which is higher
                     bestHand = findHigherStraight(bestHand, hand);  // Compare straights
+                }
+                if (currentHandValue == 2) {  // For one pair, find which pair is higher
+                    bestHand = findHigherPair(bestHand, hand);  // Compare pairs
+                }
+                if (currentHandValue == 4) {  // For three of a kind, find which is higher
+                    bestHand = findHigherThreeOfAKind(bestHand, hand);  // Compare three of a kind
                 }
             }
         }

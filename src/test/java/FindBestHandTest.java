@@ -30,16 +30,6 @@ public class FindBestHandTest {
         assertEquals(card2, playerHands.get(1).get(0));
     }
 
-    @Test
-    public void testFindWinnerOnePair() {
-        List<Card> hand1 = Arrays.asList(new Card(Suit.HEARTS, Rank.TWO), new Card(Suit.CLUBS, Rank.TWO));
-        List<Card> hand2 = Arrays.asList(new Card(Suit.SPADES, Rank.THREE), new Card(Suit.DIAMONDS, Rank.THREE));
-
-        FindBestHand.findWinnerOnePair(hand1, hand2);
-
-        // No assert here since the method just prints the winner
-        // This can be refactored to return the winning hand instead of printing
-    }
 
     @Test
     public void testCompareHands() {
