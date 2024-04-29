@@ -9,20 +9,82 @@ public class OmahaHoldemGame {
     private List<Card> communityCards;
     private int pot;
     private int currentBet;
-    private int smallBlind; // Big blind is just small blind * 2
 
-    public OmahaHoldemGame(int playerCount, int startingChips, int startingSmallBlind) {
+    public OmahaHoldemGame(int playerCount, int startingChips) {
         // Initialize the game components
         this.deck = new Deck();
         this.players = new ArrayList<>();
         this.communityCards = new ArrayList<>();
         this.pot = 0;
         this.currentBet = 0;
-        this.smallBlind = startingSmallBlind;
 
         // Create players and their give them their starting chips
         for (int i = 0; i < playerCount; i++) {
             this.players.add(PlayerFactory.getBotPlayer("Player " + i, startingChips));
+        }
+    }
+
+    private OmahaHoldemGame() {
+    }
+
+    public static class Builder {
+        private int playerCount;
+        private int startingChips;
+
+        public Builder withPlayerCount(int playerCount) {
+            this.playerCount = playerCount;
+            return this;
+        }
+
+        public Builder withStartingChips(int startingChips) {
+            this.startingChips = startingChips;
+            return this;
+        }
+
+        public OmahaHoldemGame build() {
+            OmahaHoldemGame game = new OmahaHoldemGame();
+            game.deck = new Deck();
+            game.players = new ArrayList<>();
+            game.communityCards = new ArrayList<>();
+            game.pot = 0;
+            game.currentBet = 0;
+
+            game.players.add(PlayerFactory.getHumanPlayer("You", startingChips));
+            for (int i = 1; i < playerCount; i++) {
+                game.players.add(PlayerFactory.getBotPlayer("Player " + i, startingChips));
+            }
+
+            return game;
+        }
+
+        public OmahaHoldemGame fullBotTable() {
+            OmahaHoldemGame game = new OmahaHoldemGame();
+            game.deck = new Deck();
+            game.players = new ArrayList<>();
+            game.communityCards = new ArrayList<>();
+            game.pot = 0;
+            game.currentBet = 0;
+
+            for (int i = 0; i < 8; i++) {
+                game.players.add(PlayerFactory.getBotPlayer("Player " + i, 100));
+            }
+
+            return game;
+        }
+
+        public OmahaHoldemGame twoBotTable() {
+            OmahaHoldemGame game = new OmahaHoldemGame();
+            game.deck = new Deck();
+            game.players = new ArrayList<>();
+            game.communityCards = new ArrayList<>();
+            game.pot = 0;
+            game.currentBet = 0;
+
+            for (int i = 0; i < 2; i++) {
+                game.players.add(PlayerFactory.getBotPlayer("Player " + i, 100));
+            }
+
+            return game;
         }
     }
 
