@@ -87,11 +87,9 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
+        return "name='" + name + '\'' +
                 ", chips=" + chips +
-                ", hand=" + hand +
-                '}';
+                ", hand=" + hand;
     }
 
     public void dealIn() {

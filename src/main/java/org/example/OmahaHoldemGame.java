@@ -52,7 +52,7 @@ public class OmahaHoldemGame {
 
             game.players.add(PlayerFactory.getHumanPlayer("You", startingChips));
             for (int i = 1; i < playerCount; i++) {
-                game.players.add(PlayerFactory.getBotPlayer("Player " + i, startingChips));
+                game.players.add(PlayerFactory.getBotPlayer("Player " + i, startingChips, new TimidStrategy()));
             }
 
             return game;
@@ -169,6 +169,8 @@ public class OmahaHoldemGame {
                 UI.getInstance().print(this.players.get(actionPlayer).getName() + " Calls " + currentBet);
                 // currentBet stays the same, but the extra chips added to the player's bet to call are added to the pot
                 this.pot += this.players.get(actionPlayer).call(currentBet);
+            } else if (playerBet == 0 && currentBet == 0) {
+                UI.getInstance().print(this.players.get(actionPlayer).getName() + " Checks");
             }
             if (playerBet > 0) { // Raise
                 lastRaised = actionPlayer;

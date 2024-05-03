@@ -21,6 +21,11 @@ public class BotPlayer extends Player {
         }
     }
 
+    public BotPlayer(String name, int startingChips, GameplayStrategy strat) {
+        super(name, startingChips);
+        this.strat = strat;
+    }
+
     @Override
     public int getAction(int cBet) {
         int option = strat.getStratAction();
@@ -41,5 +46,12 @@ public class BotPlayer extends Player {
             }
         }
         return option;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName() + '\'' +
+                ", chips=" + this.getChips();
+//                + ", hand: " + this.getHand();
     }
 }
