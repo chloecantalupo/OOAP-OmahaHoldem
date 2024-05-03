@@ -1,0 +1,15 @@
+Given the system is ready to start a new game
+when I initialize a new Omaha Hold'em game with 4 players, each starting with 5000 chips and a small blind of 50.
+Then the game should start with 4 players each having 5000 chips and the small blind should be set at 50
+
+Given a new game of Omaha Hold'em has been initialized with 4 players
+when the cards are dealt at the start of the game
+Then each player should receive 4 cards
+
+Given that all betting rounds have been completed in Omaha Hold'em
+when the showdown occurs,
+Then the player with the best hand according to Omaha Hold'em rules wins the pot
+
+Given that a player folds during a round of betting
+when that leaves only one player left in the hand
+Then the last player still in the hand wins the pot

@@ -20,4 +20,10 @@ public class GameTest {
         game.startGame();
     }
 
+    @Test
+    void testThreeBotGame() {
+        OmahaHoldemGame game = new OmahaHoldemGame.Builder().BotTable(3);
+        game.startGame();
+    }
+
 }

@@ -99,7 +99,7 @@ public class Player {
         this.currentBet = 0;
     }
 
-    public int getAction() {
+    public int getAction(int cBet) {
         if (!this.dealtIn) {
             return -1; // You don't get to bet if you've already folded
         }

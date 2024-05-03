@@ -13,8 +13,8 @@ public class GenerateHandCombinations {
      * @return A list of lists containing all possible 5-card combinations.
      */
     public static List<List<Card>> generateCombinations(List<Card> allCards) {
-        if (allCards.size() != 7) {
-            throw new IllegalArgumentException("The input list must contain exactly 7 cards.");
+        if (allCards.size() != 7 && allCards.size() != 9) {
+            throw new IllegalArgumentException("The input list must contain exactly 7 or 9 cards.");
         }
 
         List<List<Card>> combinations = new ArrayList<>();

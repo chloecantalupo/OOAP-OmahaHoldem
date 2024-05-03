@@ -87,6 +87,21 @@ public class OmahaHoldemGame {
 
             return game;
         }
+
+        public OmahaHoldemGame BotTable(int num) {
+            OmahaHoldemGame game = new OmahaHoldemGame();
+            game.deck = new Deck();
+            game.players = new ArrayList<>();
+            game.communityCards = new ArrayList<>();
+            game.pot = 0;
+            game.currentBet = 0;
+
+            for (int i = 0; i < num; i++) {
+                game.players.add(PlayerFactory.getBotPlayer("Player " + i, 100));
+            }
+
+            return game;
+        }
     }
 
     public void startGame() {
@@ -142,25 +157,29 @@ public class OmahaHoldemGame {
 
     // Main logic of betting, players take turns deciding to check, call, raise or fold
     private void doPlayerBetting() {
-        // TODO: Player actions need to be checked for validity, such as checking when there's a current bet
         int lastRaised = 0;
         int actionPlayer = 0;
 
         // Continue to allow player betting until the players have all called or checked
         do {
             displayGame();
-            int playerBet = this.players.get(actionPlayer).getAction();
+            int playerBet = this.players.get(actionPlayer).getAction(currentBet);
 
             if (playerBet == 0 && currentBet != 0 && this.players.get(actionPlayer).getChips() >= currentBet) { // Call
+                System.out.println(this.players.get(actionPlayer).getName() + " Calls " + currentBet);
                 // currentBet stays the same, but the extra chips added to the player's bet to call are added to the pot
                 this.pot += this.players.get(actionPlayer).call(currentBet);
             }
             if (playerBet > 0) { // Raise
                 lastRaised = actionPlayer;
+                System.out.println(this.players.get(actionPlayer).getName() + " Raises " + playerBet);
                 // Player pays in the amount they need to call + their raised value
                 this.pot += this.players.get(actionPlayer).raise(currentBet, playerBet);
                 // currentBet only increases by the raised value
                 this.currentBet += playerBet;
+            }
+            if (playerBet == -1) {
+                System.out.println(this.players.get(actionPlayer).getName() + " Folds");
             }
 
             // advance play to the next player
@@ -235,19 +254,19 @@ public class OmahaHoldemGame {
     }
 
     private Player determineWinner() {
-        // TODO: complex method of determining who won the hand
-        // for now, just return the first player that is still dealt in
-        List<Player> playersStillInHand = null;
+        List<Player> playersStillInHand = new ArrayList<>();
 
         for (Player p : this.players) {
             if (p.getDealtIn()) {
                 playersStillInHand.add(p);
             }
         }
-        if ( playersStillInHand != null){
-            throw new IllegalStateException("No players still dealt in after hand has concluded.");
+        Player winningPlayer;
+        if (playersStillInHand.size() != 1) {
+            winningPlayer = FindBestHand.findWinner(playersStillInHand, this.communityCards);
+        } else {
+            winningPlayer = playersStillInHand.get(0);
         }
-        Player winningPlayer = FindBestHand.findWinner(playersStillInHand, this.communityCards);
         System.out.println(winningPlayer.getName() + " has won the hand!");
         return winningPlayer;
     }
