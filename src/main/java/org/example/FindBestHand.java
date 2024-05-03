@@ -34,7 +34,7 @@ public class FindBestHand {
      * @param players List of players.
      * @return List of player hands.
      */
-    public List<List<Card>> storePlayerHands(List<Player> players) {
+    public static List<List<Card>> storePlayerHands(List<Player> players) {
         return players.stream()
                 .map(Player::getHand)
                 .collect(Collectors.toList());
@@ -124,6 +124,38 @@ public class FindBestHand {
 
 
     }
+
+    public static Player findWinner(List<Player> players, List<Card> river) {
+        if(players.isEmpty()) {
+            return null;
+        }
+        Map<Player, List<Card>> bestHands = new HashMap<>();
+        System.out.println(river);
+        for (Player player : players) {
+            System.out.println(player.getHand());
+            List<Card> bestHand = FindBestHand.bestHandRiver(player.getHand(), river);
+            bestHands.put(player, bestHand);
+        }
+        System.out.println(bestHands);
+
+        Player winner = null;
+        List<Card> winningHand = null;
+        int bestHandValue = 0;
+
+        for (Map.Entry<Player, List<Card>> entry : bestHands.entrySet()) {
+            int handValue = FindBestHand.checkHand(entry.getValue());
+            if (winner == null || handValue > bestHandValue) {
+                winner = entry.getKey();
+                winningHand = entry.getValue();
+                bestHandValue = handValue;
+            }
+        }
+
+        System.out.println("Winner is " + winner.getName() + " with a " + FindBestHand.HAND_TYPES.get(bestHandValue));
+        return winner;
+    }
+
+
 
 
     /**

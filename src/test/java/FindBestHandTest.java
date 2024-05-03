@@ -105,4 +105,6 @@ public class FindBestHandTest {
         FindBestHand findBestHand = new FindBestHand();
         assertTrue(FindBestHand.checkStraightFlush(straightFlushHand));  // Test to check if it is a straight flush
     }
+
+
 }

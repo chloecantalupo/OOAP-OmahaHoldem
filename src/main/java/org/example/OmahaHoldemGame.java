@@ -1,11 +1,12 @@
 package org.example;
-
+import org.example.FindBestHand;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OmahaHoldemGame {
     private Deck deck;
     private List<Player> players;
+
     private List<Card> communityCards;
     private int pot;
     private int currentBet;
@@ -150,7 +151,7 @@ public class OmahaHoldemGame {
             displayGame();
             int playerBet = this.players.get(actionPlayer).getAction();
 
-            if (playerBet == 0 && currentBet != 0) { // Call
+            if (playerBet == 0 && currentBet != 0 && this.players.get(actionPlayer).getChips() >= currentBet) { // Call
                 // currentBet stays the same, but the extra chips added to the player's bet to call are added to the pot
                 this.pot += this.players.get(actionPlayer).call(currentBet);
             }
@@ -236,12 +237,19 @@ public class OmahaHoldemGame {
     private Player determineWinner() {
         // TODO: complex method of determining who won the hand
         // for now, just return the first player that is still dealt in
+        List<Player> playersStillInHand = null;
+
         for (Player p : this.players) {
             if (p.getDealtIn()) {
-                return p;
+                playersStillInHand.add(p);
             }
         }
-        throw new IllegalStateException("No players still dealt in after hand has concluded.");
+        if ( playersStillInHand != null){
+            throw new IllegalStateException("No players still dealt in after hand has concluded.");
+        }
+        Player winningPlayer = FindBestHand.findWinner(playersStillInHand, this.communityCards);
+        System.out.println(winningPlayer.getName() + " has won the hand!");
+        return winningPlayer;
     }
 
     private boolean isGameOver() {
