@@ -69,7 +69,7 @@ public class FindBestHand {
 
         for (Map.Entry<String, List<Card>> entry : handsDict.entrySet()) {
             if (entry.getValue().equals(highestHand)) {
-                System.out.println(entry.getKey() + " has the highest hand with: " + HAND_TYPES.get(checkHand(highestHand)));
+                UI.getInstance().print(entry.getKey() + " has the highest hand with: " + HAND_TYPES.get(checkHand(highestHand)));
             }
         }
     }
@@ -95,7 +95,7 @@ public class FindBestHand {
         int bestHandValue = 0;
         List<Card> allCards = new ArrayList<>(cards);
         allCards.addAll(river);
-        System.out.println(allCards.size());
+        UI.getInstance().print(String.valueOf(allCards.size()));
         List<List<Card>> allCombinations = generateCombinations(allCards);
 
 
@@ -130,13 +130,13 @@ public class FindBestHand {
             return null;
         }
         Map<Player, List<Card>> bestHands = new HashMap<>();
-        System.out.println(river);
+        UI.getInstance().print(river.toString());
         for (Player player : players) {
-            System.out.println(player.getHand());
+            UI.getInstance().print(player.getHand().toString());
             List<Card> bestHand = FindBestHand.bestHandRiver(player.getHand(), river);
             bestHands.put(player, bestHand);
         }
-        System.out.println(bestHands);
+        UI.getInstance().print(bestHands.toString());
 
         Player winner = null;
         List<Card> winningHand = null;
@@ -151,7 +151,7 @@ public class FindBestHand {
             }
         }
 
-        System.out.println("Winner is " + winner.getName() + " with a " + FindBestHand.HAND_TYPES.get(bestHandValue));
+        UI.getInstance().print("Winner is " + winner.getName() + " with a " + FindBestHand.HAND_TYPES.get(bestHandValue));
         return winner;
     }
 

@@ -105,38 +105,38 @@ public class OmahaHoldemGame {
     }
 
     public void startGame() {
-        System.out.println("Welcome to Omaha Hold'em!");
+        UI.getInstance().print("Welcome to Omaha Hold'em!");
         while (!isGameOver()) {
-            System.out.println("Dealing 4 cards to each player...");
+            UI.getInstance().print("Dealing 4 cards to each player...");
             deal();
             playPreFlop();
             if (checkRemainingPlayers()) {
-                System.out.println("Everyone else folded!");
+                UI.getInstance().print("Everyone else folded!");
                 prepareForNextHand();
                 continue;
             }
-            System.out.println("Dealing the flop...");
+            UI.getInstance().print("Dealing the flop...");
             playFlop();
             if (checkRemainingPlayers()) {
-                System.out.println("Everyone else folded!");
+                UI.getInstance().print("Everyone else folded!");
                 prepareForNextHand();
                 continue;
             }
-            System.out.println("Dealing the turn...");
+            UI.getInstance().print("Dealing the turn...");
             playTurn();
             if (checkRemainingPlayers()) {
-                System.out.println("Everyone else folded!");
+                UI.getInstance().print("Everyone else folded!");
                 prepareForNextHand();
                 continue;
             }
-            System.out.println("Dealing the river...");
+            UI.getInstance().print("Dealing the river...");
             playRiver();
             if (checkRemainingPlayers()) {
-                System.out.println("Everyone else folded!");
+                UI.getInstance().print("Everyone else folded!");
                 prepareForNextHand();
                 continue;
             }
-            System.out.println("Let's see who won!");
+            UI.getInstance().print("Let's see who won!");
             showdown();
             prepareForNextHand();
         }
@@ -166,20 +166,20 @@ public class OmahaHoldemGame {
             int playerBet = this.players.get(actionPlayer).getAction(currentBet);
 
             if (playerBet == 0 && currentBet != 0 && this.players.get(actionPlayer).getChips() >= currentBet) { // Call
-                System.out.println(this.players.get(actionPlayer).getName() + " Calls " + currentBet);
+                UI.getInstance().print(this.players.get(actionPlayer).getName() + " Calls " + currentBet);
                 // currentBet stays the same, but the extra chips added to the player's bet to call are added to the pot
                 this.pot += this.players.get(actionPlayer).call(currentBet);
             }
             if (playerBet > 0) { // Raise
                 lastRaised = actionPlayer;
-                System.out.println(this.players.get(actionPlayer).getName() + " Raises " + playerBet);
+                UI.getInstance().print(this.players.get(actionPlayer).getName() + " Raises " + playerBet);
                 // Player pays in the amount they need to call + their raised value
                 this.pot += this.players.get(actionPlayer).raise(currentBet, playerBet);
                 // currentBet only increases by the raised value
                 this.currentBet += playerBet;
             }
             if (playerBet == -1) {
-                System.out.println(this.players.get(actionPlayer).getName() + " Folds");
+                UI.getInstance().print(this.players.get(actionPlayer).getName() + " Folds");
             }
 
             // advance play to the next player
@@ -244,7 +244,7 @@ public class OmahaHoldemGame {
 
         Player winner = determineWinner();
         winner.winPot(pot);
-        System.out.println(winner.getName() + " has won a pot of " + this.pot + " chips!!!");
+        UI.getInstance().print(winner.getName() + " has won a pot of " + this.pot + " chips!!!");
         this.pot = 0;
         this.communityCards.clear();
 
@@ -267,7 +267,7 @@ public class OmahaHoldemGame {
         } else {
             winningPlayer = playersStillInHand.get(0);
         }
-        System.out.println(winningPlayer.getName() + " has won the hand!");
+        UI.getInstance().print(winningPlayer.getName() + " has won the hand!");
         return winningPlayer;
     }
 
@@ -284,7 +284,7 @@ public class OmahaHoldemGame {
     }
 
     private void gameOver() {
-        System.out.println("Game Over!");
+        UI.getInstance().print("Game Over!");
         Player winner = players.get(0);
         // Find the winner
         for (Player p : this.players) {
@@ -293,7 +293,7 @@ public class OmahaHoldemGame {
                 break;
             }
         }
-        System.out.println("The winner is " + winner.getName());
+        UI.getInstance().print("The winner is " + winner.getName());
     }
 
     @Override
@@ -307,7 +307,7 @@ public class OmahaHoldemGame {
     }
 
     public void displayGame() {
-        System.out.println(this);
+        UI.getInstance().print(this.toString());
     }
     // Additional methods for handling player actions, updating the UI, etc.
 }
