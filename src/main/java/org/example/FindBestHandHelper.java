@@ -28,7 +28,7 @@ public class FindBestHandHelper {
         } if (highCard2 > highCard1) {
             return hand2;
         }
-        return null; // Both hands have the same high card
+        return hand1; // Both hands have the same high card
 
     }
 
@@ -58,7 +58,7 @@ public class FindBestHandHelper {
                 return hand2;
             }
         }
-        return null; // Either no pairs found or both pairs are of the same rank
+        return hand1; // Either no pairs found or both pairs are of the same rank
     }
 
     private static Integer findThreeOfAKindRank(List<Card> hand) {
@@ -87,7 +87,7 @@ public class FindBestHandHelper {
                 return hand2;
             }
         }
-        return null; // Either no three of a kinds found or both are of the same rank
+        return hand1; // Either no three of a kinds found or both are of the same rank
     }
 
 }
